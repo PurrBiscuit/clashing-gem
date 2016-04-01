@@ -2,15 +2,20 @@ require "httparty"
 
 class Clashtastic
 
+  @@vars_path = File.dirname(__FILE__) + '/vars'
+
   def initialize(options = {})
     if options.has_key?(:jwt_token)
       @jwt_token = options[:jwt_token]
-      puts "Loading JWT_TOKEN from value passed in to the initialize method"
+      puts "Loading jwt_token from value passed in to the initialize method"
     elsif ENV.has_key?('CLASH_JWT_TOKEN')
       @jwt_token = ENV['CLASH_JWT_TOKEN']
-      puts "Loading JWT_TOKEN from the CLASH_JWT_TOKEN Environment Variable"
+      puts "Loading jwt_token from the CLASH_JWT_TOKEN Environment Variable"
+    elsif File.exists?("#{@@vars_path}/jwt_token")
+      @jwt_token = File.read("#{@@vars_path}/jwt_token").strip
+      puts "Loading jwt_token from the vars/jwt_token file"
     else
-      raise "JWT_TOKEN missing; please set it as an env var or pass it directly into the initialize method"
+      raise "jwt_token missing; please set it as an env var, in the vars/jwt_token file, or pass it directly into the initialize method"
     end
   end
 
