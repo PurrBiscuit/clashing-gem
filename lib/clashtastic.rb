@@ -45,19 +45,19 @@ class Clashtastic
 
   #Location Things
   def list_locations()
-
+    self.query("locations", nil)
   end
 
-  def location_info()
-
+  def location_info(locationid)
+    self.query("locations/#{locationid}", nil)
   end
 
-  def location_rankings()
-
+  def location_rankings(locationid, rankingid)
+    self.query("locations/#{locationid}/rankings/#{rankingid}", nil)
   end
 
   #League Things
   def list_leagues()
-
+    self.query("leagues", nil)
   end
 end
