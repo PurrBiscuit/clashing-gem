@@ -1,8 +1,17 @@
 require "httparty"
 
 class Clashtastic
-  def initialize(jwt_token)
-    @jwt_token = jwt_token
+
+  def initialize(options = {})
+    if options.has_key?(:jwt_token)
+      @jwt_token = options[:jwt_token]
+      puts "Loading JWT_TOKEN from value passed in to the initialize method"
+    elsif ENV.has_key?('CLASH_JWT_TOKEN')
+      @jwt_token = ENV['CLASH_JWT_TOKEN']
+      puts "Loading JWT_TOKEN from the CLASH_JWT_TOKEN Environment Variable"
+    else
+      raise "JWT_TOKEN missing; please set it as an env var or pass it directly into the initialize method"
+    end
   end
 
   def query(path, query)
@@ -15,6 +24,7 @@ class Clashtastic
     )
     puts clash_uri
     HTTParty.get(clash_uri, :headers => {'Authorization' => 'Bearer ' + @jwt_token})
+    self["items"]
   end
 
   #Clan Things
