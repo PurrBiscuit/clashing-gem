@@ -5,13 +5,29 @@ class Clashtastic
     @jwt_token = jwt_token
   end
 
-  def query(query)
-    HTTParty.get("https://api.clashofclans.com/v1/#{query}", :headers => {'Authorization' => 'Bearer ' + @jwt_token})
+  def query(path, query)
+    clash_uri = URI::HTTPS.build(
+      {
+        :host => "api.clashofclans.com",
+        :path => "/v1/#{path}",
+        :query => query
+      }
+    )
+    puts clash_uri
+    HTTParty.get(clash_uri, :headers => {'Authorization' => 'Bearer ' + @jwt_token})
   end
 
   #Clan Things
-  def search_clans()
+  def search_clans(*args)
+    path = "clans"
+    if args.count == 1
+      query = args[0]
+    else
+      query = args.join("&")
+    end
+    query.gsub(" ", "%20")
 
+    self.query(path, query)
   end
 
   def clan_info()
