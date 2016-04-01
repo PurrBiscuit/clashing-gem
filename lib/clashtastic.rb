@@ -19,19 +19,21 @@ class Clashtastic
 
   #Clan Things
   def search_clans(*args)
-    path = "clans"
     if args.count == 1
       query = args[0]
     else
       query = args.join("&")
     end
-    query.gsub(" ", "%20")
+    query.gsub!(" ", "%20")
 
-    self.query(path, query)
+    self.query("clans", query)
   end
 
-  def clan_info()
+  def clan_info(clantag)
+    clantag.gsub!("#", "%23")
+    path = "clans/#{clantag}"
 
+    self.query(path, nil)
   end
 
   def list_members()
