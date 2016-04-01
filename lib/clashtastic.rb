@@ -36,8 +36,11 @@ class Clashtastic
     self.query(path, nil)
   end
 
-  def list_members()
+  def list_members(clantag)
+    clantag.gsub!("#", "%23")
+    path = "clans/#{clantag}/members"
 
+    self.query(path, nil)
   end
 
   #Location Things
