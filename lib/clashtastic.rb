@@ -23,8 +23,8 @@ class Clashtastic
       }
     )
     puts clash_uri
-    HTTParty.get(clash_uri, :headers => {'Authorization' => 'Bearer ' + @jwt_token})
-    self["items"]
+    results = HTTParty.get(clash_uri, :headers => {'Authorization' => 'Bearer ' + @jwt_token})
+    results["items"]
   end
 
   #Clan Things
